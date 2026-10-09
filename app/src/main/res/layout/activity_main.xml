@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#0f0f0f" android:padding="16dp">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="JHON BUBBLE MANAGER" android:textColor="#22c55e" android:textSize="20sp" android:textStyle="bold"/>
+
+    <TextView android:id="@+id/txtCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="0 script" android:textColor="#888" android:layout_marginTop="4dp"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="16dp">
+        <Button android:id="@+id/btnAdd" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+            android:text="+ TAMBAH SCRIPT" android:backgroundTint="#22c55e"/>
+        <Button android:id="@+id/btnStartBubble" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:layout_marginStart="8dp"
+            android:text="BUBBLE ON" android:backgroundTint="#0ea5e9"/>
+    </LinearLayout>
+
+    <Button android:id="@+id/btnRefresh" android:layout_width="match_parent" android:layout_height="40dp"
+        android:text="Refresh List" android:layout_marginTop="8dp" android:backgroundTint="#333"/>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="16dp">
+        <LinearLayout android:id="@+id/scriptContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+    </ScrollView>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Fitur: Tambah, Edit, Hapus, Gonta-ganti script langsung di HP. Bubble bisa inject script ke Facebook melayang." android:textColor="#666" android:textSize="11sp" android:layout_marginTop="8dp"/>
+</LinearLayout>
