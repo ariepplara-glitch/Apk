@@ -1,0 +1,7 @@
+<resources>
+    <!-- Dibutuhkan karena MainActivity extends AppCompatActivity -- tanpa tema ini
+         app akan crash langsung saat dibuka ("You need to use a Theme.AppCompat
+         theme (or descendant) with this activity"). Tema default device biasanya
+         BUKAN turunan Theme.AppCompat, jadi ini wajib ada. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar" />
+</resources>
