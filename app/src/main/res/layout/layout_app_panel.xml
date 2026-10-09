@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:background="#141414">
+
+    <LinearLayout android:id="@+id/appHeader" android:layout_width="match_parent" android:layout_height="40dp"
+        android:orientation="horizontal" android:background="#16a34a" android:gravity="center_vertical" android:paddingHorizontal="10dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="🎬 JHON · App FB" android:textColor="#fff" android:textStyle="bold" android:textSize="13sp"/>
+        <TextView android:id="@+id/txtCounter" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="0/13" android:textColor="#fff" android:textSize="13sp" android:layout_marginEnd="8dp"/>
+        <TextView android:id="@+id/btnAppWeb" android:layout_width="36dp" android:layout_height="28dp"
+            android:text="WEB" android:textSize="10sp" android:gravity="center" android:textColor="#fff" android:background="#00000033"/>
+        <TextView android:id="@+id/btnAppMin" android:layout_width="28dp" android:layout_height="28dp"
+            android:text="—" android:gravity="center" android:textColor="#fff" android:background="#00000033" android:layout_marginStart="6dp"/>
+        <TextView android:id="@+id/btnAppClose" android:layout_width="28dp" android:layout_height="28dp"
+            android:text="X" android:gravity="center" android:textColor="#fff" android:background="#7f1d1d" android:layout_marginStart="6dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="10dp">
+
+        <TextView android:id="@+id/txtNext" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="BERIKUTNYA 01 / 13  ·  video01.mp4" android:textColor="#FFD60A" android:textStyle="bold"
+            android:textSize="14sp" android:gravity="center" android:padding="8dp" android:background="#0a0a0a"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="8dp" android:gravity="center_vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Total post:" android:textColor="#aaa" android:textSize="12sp"/>
+            <EditText android:id="@+id/edtTotal" android:layout_width="56dp" android:layout_height="36dp"
+                android:inputType="number" android:text="13" android:textSize="12sp" android:textColor="#fff"
+                android:background="#222" android:gravity="center" android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <Button android:id="@+id/btnStart" android:layout_width="match_parent" android:layout_height="46dp"
+            android:text="▶ MULAI" android:backgroundTint="#16a34a" android:layout_marginTop="8dp"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="6dp">
+            <Button android:id="@+id/btnDump" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1"
+                android:text="📋 LOG LAYAR" android:textSize="11sp" android:backgroundTint="#7c3aed"/>
+            <Button android:id="@+id/btnStop" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1"
+                android:text="STOP" android:textSize="11sp" android:backgroundTint="#b45309" android:layout_marginStart="6dp"/>
+            <Button android:id="@+id/btnResetRun" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1"
+                android:text="RESET" android:textSize="11sp" android:backgroundTint="#333" android:layout_marginStart="6dp"/>
+        </LinearLayout>
+
+        <ScrollView android:id="@+id/logScroll" android:layout_width="match_parent" android:layout_height="110dp"
+            android:layout_marginTop="8dp" android:background="#0a0a0a">
+            <TextView android:id="@+id/txtLog" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="#9ca3af" android:textSize="10sp" android:fontFamily="monospace" android:padding="6dp"/>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
