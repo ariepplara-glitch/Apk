@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#141414">
+
+    <LinearLayout android:id="@+id/header" android:layout_width="match_parent" android:layout_height="48dp"
+        android:orientation="horizontal" android:background="#16a34a" android:gravity="center_vertical" android:paddingHorizontal="12dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="🎬 JHON Manager Melayang" android:textColor="#fff" android:textStyle="bold"/>
+        <TextView android:id="@+id/btnMinimize" android:layout_width="32dp" android:layout_height="32dp"
+            android:text="—" android:gravity="center" android:textColor="#fff" android:background="#00000033"/>
+        <TextView android:id="@+id/btnClose" android:layout_width="32dp" android:layout_height="32dp"
+            android:text="X" android:gravity="center" android:textColor="#fff" android:background="#7f1d1d" android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="40dp" android:orientation="horizontal">
+        <Button android:id="@+id/tabBrowser" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:text="BROWSER" android:textSize="12sp"/>
+        <Button android:id="@+id/tabScripts" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:text="SCRIPTS" android:textSize="12sp" android:backgroundTint="#555"/>
+    </LinearLayout>
+
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+
+        <LinearLayout android:id="@+id/browserContainer" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <WebView android:id="@+id/webView" android:layout_width="match_parent" android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/scriptsContainer" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical" android:background="#0f0f0f" android:padding="12dp" android:visibility="gone">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/edtScriptName" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1"
+                    android:hint="Nama script" android:textSize="12sp" android:background="#222" android:textColor="#fff" android:padding="8dp"/>
+                <Button android:id="@+id/btnNewScript" android:layout_width="60dp" android:layout_height="40dp" android:text="BARU" android:textSize="10sp" android:layout_marginStart="6dp"/>
+            </LinearLayout>
+
+            <EditText android:id="@+id/edtScriptCode" android:layout_width="match_parent" android:layout_height="120dp"
+                android:hint="Kode JS..." android:background="#111" android:textColor="#22c55e" android:textSize="11sp"
+                android:fontFamily="monospace" android:gravity="top|start" android:padding="8dp"
+                android:inputType="textMultiLine" android:layout_marginTop="8dp"/>
+
+            <Button android:id="@+id/btnSaveScript" android:layout_width="match_parent" android:layout_height="44dp"
+                android:text="SIMPAN SCRIPT" android:backgroundTint="#22c55e" android:layout_marginTop="8dp"/>
+
+            <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="12dp">
+                <LinearLayout android:id="@+id/scriptListContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+            </ScrollView>
+        </LinearLayout>
+
+    </FrameLayout>
+</LinearLayout>

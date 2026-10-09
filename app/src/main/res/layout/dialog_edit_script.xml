@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+    <EditText android:id="@+id/edtName" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="Nama script (contoh: JHON FB Video)" android:textColor="#fff" android:textColorHint="#666"/>
+    <EditText android:id="@+id/edtCode" android:layout_width="match_parent" android:layout_height="200dp"
+        android:hint="Tempel kode JS di sini..." android:gravity="top|start" android:background="#111" android:textColor="#22c55e"
+        android:padding="10dp" android:inputType="textMultiLine" android:fontFamily="monospace" android:textSize="12sp" android:layout_marginTop="8dp"/>
+</LinearLayout>

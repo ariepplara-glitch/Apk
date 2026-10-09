@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+    android:background="#222" android:padding="10dp" android:layout_marginBottom="6dp">
+    <TextView android:id="@+id/txtName" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Nama Script" android:textColor="#FFD60A" android:textStyle="bold" android:textSize="13sp"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+        <Button android:id="@+id/btnInject" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="INJECT" android:textSize="10sp" android:backgroundTint="#22c55e"/>
+        <Button android:id="@+id/btnEdit" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="EDIT" android:textSize="10sp" android:layout_marginStart="4dp" android:backgroundTint="#555"/>
+        <Button android:id="@+id/btnDelete" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="HAPUS" android:textSize="10sp" android:layout_marginStart="4dp" android:backgroundTint="#7f1d1d"/>
+    </LinearLayout>
+</LinearLayout>
