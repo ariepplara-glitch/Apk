@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.jhon.floating">
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- FIX #1: wajib sejak Android 14 (API 34) untuk tipe FGS "specialUse" yang dipakai di bawah.
+         Tanpa izin ini, startForeground() dengan foregroundServiceType="specialUse" akan ditolak. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- FIX #2: wajib diminta runtime sejak Android 13 (API 33) supaya notifikasi foreground
+         service ("JHON Bubble Manager Aktif") benar-benar muncul, bukan senyap. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <application android:allowBackup="true" android:label="JHON Bubble Manager"
+        android:icon="@android:drawable/sym_def_app_icon"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+        </activity>
+        <!-- FIX #1: foregroundServiceType WAJIB dideklarasikan sejak targetSdk 34, kalau tidak
+             startForeground() di FloatingService.createNotification() melempar
+             MissingForegroundServiceTypeException dan app CRASH begitu bubble diaktifkan.
+             "specialUse" dipakai karena bubble/overlay manager tidak masuk kategori FGS baku
+             (mediaPlayback, location, dsb) -- subtype-nya dideklarasikan lewat <property> di bawah. -->
+        <service android:name=".FloatingService" android:enabled="true" android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="floating_bubble_overlay" />
+        </service>
+    </application>
+</manifest>
