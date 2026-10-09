@@ -1,0 +1,28 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.jhon.floating'
+    compileSdk 34
+    defaultConfig {
+        applicationId "com.jhon.floating"
+        minSdk 24
+        targetSdk 34
+        versionCode 2
+        versionName "3.1 manager"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    // ActivityCompat/ContextCompat (dipakai buat izin notifikasi runtime) sudah ikut
+    // di dalam core-ktx/appcompat ini -- tidak perlu dependency tambahan di luar 3 ini,
+    // supaya lebih gampang di-build di tools selain Android Studio/Gradle resmi.
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+}
