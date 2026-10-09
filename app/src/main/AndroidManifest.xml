@@ -19,7 +19,7 @@
              startForeground() di FloatingService.createNotification() melempar
              MissingForegroundServiceTypeException dan app CRASH begitu bubble diaktifkan.
              "specialUse" dipakai karena bubble/overlay manager tidak masuk kategori FGS baku
-             (mediaPlayback, location, dsb) -- subtype-nya dideklarasikan lewat <property> di bawah. -->
+             (mediaPlayback, location, dsb) - subtype-nya dideklarasikan lewat <property> di bawah. -->
         <service android:name=".FloatingService" android:enabled="true" android:exported="false"
             android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
