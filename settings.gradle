@@ -1,0 +1,2 @@
+rootProject.name = "JHON Bubble Manager"
+include ':app'
