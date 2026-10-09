@@ -9,6 +9,10 @@
     <!-- FIX #2: wajib diminta runtime sejak Android 13 (API 33) supaya notifikasi foreground
          service ("JHON Bubble Manager Aktif") benar-benar muncul, bukan senyap. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <queries>
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.facebook.lite" />
+    </queries>
     <application android:allowBackup="true" android:label="JHON Bubble Manager"
         android:icon="@android:drawable/sym_def_app_icon"
         android:theme="@style/AppTheme">
@@ -19,11 +23,18 @@
              startForeground() di FloatingService.createNotification() melempar
              MissingForegroundServiceTypeException dan app CRASH begitu bubble diaktifkan.
              "specialUse" dipakai karena bubble/overlay manager tidak masuk kategori FGS baku
-             (mediaPlayback, location, dsb) - subtype-nya dideklarasikan lewat <property> di bawah. -->
+             (mediaPlayback, location, dsb) -- subtype-nya dideklarasikan lewat <property> di bawah. -->
         <service android:name=".FloatingService" android:enabled="true" android:exported="false"
             android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="floating_bubble_overlay" />
+        </service>
+        <service android:name=".FbAutomationService" android:exported="false"
+            android:label="JHON Bubble Manager"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter><action android:name="android.accessibilityservice.AccessibilityService" /></intent-filter>
+            <meta-data android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
         </service>
     </application>
 </manifest>
