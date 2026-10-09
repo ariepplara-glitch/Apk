@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnAdd).setOnClickListener { showEditDialog(null) }
         findViewById<Button>(R.id.btnStartBubble).setOnClickListener { checkPermissionAndStart() }
+        findViewById<Button>(R.id.btnAccessibility).setOnClickListener {
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            Toast.makeText(this, "Cari 'JHON Bubble Manager' lalu aktifkan", Toast.LENGTH_LONG).show()
+        }
         findViewById<Button>(R.id.btnRefresh).setOnClickListener { refreshList() }
 
         refreshList()
