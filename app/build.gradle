@@ -16,12 +16,18 @@ android {
             minifyEnabled false
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 
 dependencies {
     // ActivityCompat/ContextCompat (dipakai buat izin notifikasi runtime) sudah ikut
-    // di dalam core-ktx/appcompat ini -- tidak perlu dependency tambahan di luar 3 ini,
-    // supaya lebih gampang di-build di tools selain Android Studio/Gradle resmi.
+    // di dalam core-ktx/appcompat ini, tidak perlu dependency tambahan di luar 3 ini.
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
