@@ -36,6 +36,11 @@ class FloatingService : Service() {
     private var persistentWebView: WebView? = null
     private var editingId: String? = null
 
+    // Mode APP: panel kecil tanpa WebView, melayang di atas aplikasi Facebook asli.
+    private var appPanelView: View? = null
+    private var appPanelParams: WindowManager.LayoutParams? = null
+    private val ui = android.os.Handler(android.os.Looper.getMainLooper())
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
@@ -104,7 +109,13 @@ class FloatingService : Service() {
 
     // FIX #6: tap bubble sekarang MINIMIZE (sembunyikan tanpa mematikan WebView),
     // bukan CLOSE penuh -- supaya tap tak sengaja tidak menghentikan script yang lagi jalan.
-    private fun toggleWindow() { if (isWindowOpen) minimizeWindow() else openWindow() }
+    private fun toggleWindow() {
+        when {
+            isWindowOpen -> minimizeWindow()      // panel WEB lama sedang terbuka
+            appPanelView != null -> closeAppPanel() // panel app FB sedang terbuka
+            else -> openAppPanel()                  // default: panel melayang di atas app FB
+        }
+    }
 
     private fun openWindow() {
         if (isWindowOpen) return
@@ -306,10 +317,92 @@ class FloatingService : Service() {
         persistentWebView = null
     }
 
+    // ===== MODE APP FB (tanpa WebView) =====
+    private fun openAppPanel() {
+        if (appPanelView != null) return
+        val v = LayoutInflater.from(this).inflate(R.layout.layout_app_panel, null)
+        val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY else WindowManager.LayoutParams.TYPE_PHONE
+        // NOT_FOCUSABLE: sentuhan di luar panel tetap sampai ke Facebook; keyboard ikut mati,
+        // jadi kolom "Total post" memakai FLAG khusus saat difokuskan (lihat bawah).
+        val p = WindowManager.LayoutParams(
+            (resources.displayMetrics.widthPixels * 0.80).toInt(),
+            WindowManager.LayoutParams.WRAP_CONTENT, type,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            PixelFormat.TRANSLUCENT
+        ).apply { gravity = Gravity.TOP or Gravity.START; x = 40; y = 200 }
+        appPanelView = v; appPanelParams = p
+
+        val txtLog = v.findViewById<TextView>(R.id.txtLog)
+        val logScroll = v.findViewById<ScrollView>(R.id.logScroll)
+        val edtTotal = v.findViewById<EditText>(R.id.edtTotal)
+        val logFn: (String) -> Unit = { m ->
+            val t = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+            ui.post { txtLog.append("[$t] $m\n"); logScroll.post { logScroll.fullScroll(View.FOCUS_DOWN) } }
+        }
+        fun refresh() = ui.post {
+            val n = AutoRunner.next(this); val tot = AutoRunner.total(this)
+            v.findViewById<TextView>(R.id.txtCounter).text = "${(n - 1).coerceAtLeast(0)}/$tot"
+            v.findViewById<TextView>(R.id.txtNext).text =
+                if (n > tot) "SELESAI ✔  $tot / $tot" else "BERIKUTNYA %02d / %d  ·  video%02d.mp4".format(n, tot, n)
+            v.findViewById<Button>(R.id.btnStart).text = if (AutoRunner.isRunning()) "⏳ BERJALAN…" else if (n > 1 && n <= tot) "▶ MULAI LAGI" else "▶ MULAI"
+        }
+        edtTotal.setText(AutoRunner.total(this).toString())
+        refresh()
+
+        // Ketuk kolom total -> izinkan keyboard sebentar; selesai edit -> kembali NOT_FOCUSABLE.
+        edtTotal.setOnTouchListener { _, e ->
+            if (e.action == MotionEvent.ACTION_DOWN) {
+                p.flags = p.flags and WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE.inv()
+                windowManager.updateViewLayout(v, p)
+                edtTotal.requestFocus()
+            }
+            false
+        }
+        edtTotal.setOnEditorActionListener { _, _, _ ->
+            edtTotal.text.toString().toIntOrNull()?.let { AutoRunner.setTotal(this, it) }
+            p.flags = p.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            windowManager.updateViewLayout(v, p); refresh(); false
+        }
+
+        v.findViewById<Button>(R.id.btnStart).setOnClickListener {
+            edtTotal.text.toString().toIntOrNull()?.let { AutoRunner.setTotal(this, it) }
+            AutoRunner.start(this, logFn) { refresh() }; refresh()
+        }
+        v.findViewById<Button>(R.id.btnStop).setOnClickListener { AutoRunner.stop(); logFn("STOP ditekan"); refresh() }
+        v.findViewById<Button>(R.id.btnResetRun).setOnClickListener {
+            if (!AutoRunner.isRunning()) { AutoRunner.reset(this); logFn("Reset ke post 1"); refresh() }
+        }
+        v.findViewById<Button>(R.id.btnDump).setOnClickListener {
+            val svc = FbAutomationService.instance
+            logFn(if (svc == null) "⚠ Aksesibilitas belum aktif (buka app → AKTIFKAN AKSESIBILITAS)" else "Layar sekarang:\n" + svc.dumpScreen())
+        }
+        v.findViewById<View>(R.id.btnAppMin).setOnClickListener { closeAppPanel() }
+        v.findViewById<View>(R.id.btnAppClose).setOnClickListener { AutoRunner.stop(); closeAppPanel() }
+        v.findViewById<View>(R.id.btnAppWeb).setOnClickListener { closeAppPanel(); openWindow() }
+
+        var iX = 0; var iY = 0; var tX = 0f; var tY = 0f
+        v.findViewById<View>(R.id.appHeader).setOnTouchListener { _, e ->
+            when (e.action) {
+                MotionEvent.ACTION_DOWN -> { iX = p.x; iY = p.y; tX = e.rawX; tY = e.rawY; true }
+                MotionEvent.ACTION_MOVE -> { p.x = iX + (e.rawX - tX).toInt(); p.y = iY + (e.rawY - tY).toInt()
+                    windowManager.updateViewLayout(v, p); true }
+                else -> false
+            }
+        }
+        windowManager.addView(v, p)
+    }
+
+    // Minimize: panel hilang, tapi AutoRunner (thread terpisah) tetap jalan.
+    private fun closeAppPanel() {
+        appPanelView?.let { try { windowManager.removeView(it) } catch (e: Exception) {} }
+        appPanelView = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         try { windowManager.removeView(bubbleView) } catch (e: Exception) {}
         try { if (isWindowOpen) windowManager.removeView(windowView) } catch (e: Exception) {}
+        AutoRunner.stop(); closeAppPanel()
         // FIX #5: pastikan WebView ikut mati total saat service-nya sendiri dihentikan
         // (mis. di-kill sistem atau user stop dari notifikasi), bukan cuma window-nya.
         persistentWebView?.let {
